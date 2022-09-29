@@ -16,5 +16,15 @@ pipeline{
                 }
             }
         }
+        stage ('Deploy to Staging Environment') {
+            steps{
+                deploy adapters: [tomcat9(credentialsId: 'tomcat-staging-credentials', path: '', url: 'http://172.17.0.1:8888')], contextPath: '/', war: '**/*.war'
+            }
+            post {
+                success {
+                    echo 'Deployed on Staging Environment'
+                }
+            }
+        }
     }   
 }

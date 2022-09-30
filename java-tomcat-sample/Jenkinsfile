@@ -16,29 +16,11 @@ pipeline{
                 }
             }
         }
-        stage ('Deploy to Staging Environment') {
+
+
+        stage ('Create tomcat docker Image') {
             steps{
-                deploy adapters: [tomcat9(credentialsId: 'tomcat-staging-credentials', path: '', url: 'http://172.17.0.1:8888')], contextPath: '/', war: '**/*.war'
-            }
-            post {
-                success {
-                    echo 'Deployed on Staging Environment'
-                }
-            }
-        }
-        stage ('Deploy to Production Environment') {
-            
-            steps{
-                timeout(time: 5, unit: 'DAYS') {
-                    input message: 'Do you want to proceed to Production Release ?', ok: 'Yes'
-                }                
-                deploy adapters: [tomcat9(credentialsId: 'tomcat-staging-credentials', path: '', url: 'http://172.17.0.1:8889')], contextPath: '/', war: '**/*.war'
-            
-            }            
-            post {
-                success {
-                    echo 'Deployed on Production Environment'
-                }
+                sh 'docker build . -t tomcatsamplewebapp:${env.BUILD_ID}'
             }
         }
     }   

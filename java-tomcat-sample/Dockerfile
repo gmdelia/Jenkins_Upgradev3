@@ -1,6 +1,6 @@
 FROM tomcat-custom
-
-COPY **/*.war /usr/local/tomcat/webapps
+RUN rm -R -f ROOT
+COPY **/*.war /usr/local/tomcat/webapps/ROOT.war
 
 EXPOSE 8080
 

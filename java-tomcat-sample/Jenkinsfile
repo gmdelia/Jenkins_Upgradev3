@@ -8,8 +8,7 @@ pipeline{
 
     stages {
         stage ('Build Application'){
-            steps {
-                sh 'printenv'
+            steps {                
                 sh 'mvn -f java-tomcat-sample/pom.xml clean package'
             }
             post {
@@ -23,7 +22,7 @@ pipeline{
 
         stage ('Create tomcat docker Image') {
             steps{
-                sh "docker build -t tomcatsamplewebapp:${BUILD_ID} -f java-tomcat-sample/Dockerfile ."
+                sh "docker build -f java-tomcat-sample/Dockerfile -t tomcatsamplewebapp:${BUILD_ID} ."
             }
         }
     }   
